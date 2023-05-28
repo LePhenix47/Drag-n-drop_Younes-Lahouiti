@@ -107,35 +107,3 @@
 
     overflow: hidden;
 }
-
-//Element speific mixins:
-
-@mixin label-space-between($gap: 0px) {
-    display: inline-flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: $gap;
-}
-
-
-@mixin input-range-style {
-    height: 10px;
-
-    --track-width: 307px !important;
-
-    @include mobile-only {
-        --track-width: 707px !important;
-    }
-
-    --track-height: 10px !important;
-
-    --track-appearance: none !important;
-    --track-bg: grey !important;
-
-    --thumb-bg: currentColor !important;
-
-    --thumb-width: 9px !important;
-    --thumb-height: 9px !important;
-
-    --inner-track-bg: lightgrey !important;
-}
