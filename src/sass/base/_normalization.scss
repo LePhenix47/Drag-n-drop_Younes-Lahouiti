@@ -44,15 +44,17 @@ html {
 body {
     min-height: 100vh;
 
+    background-position: 0% 100%;
+    background-size: 200% 200%;
 
-    background-color: var(--bg-primary);
+    background-image: linear-gradient(45deg, #72caff, #00e3ca, #006fb3, #002840);
     color: var(--color-primary);
 
 
     overflow-x: hidden;
 
     transition:
-        background-color 650ms ease-in-out,
+        background-position 650ms ease-in-out,
         color 350ms ease-in-out;
 
 }

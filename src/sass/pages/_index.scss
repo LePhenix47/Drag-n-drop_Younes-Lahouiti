@@ -1,3 +1,72 @@
 @use "../utils/" as *;
 
-.index {}
+.index {
+    min-height: calc(100vh - 35px * 4);
+
+    @include center-flex(50px);
+
+    @include mobile-only {
+        @include center-flex-column(50px);
+    }
+
+    padding: 50px;
+
+    &__container {
+        background-color: var(--semi-transparent-bg);
+
+        min-height: 500px;
+        width: 50%;
+
+        @include mobile-only {
+            width: 100%;
+        }
+
+        border-radius: var(--container-border-radius);
+
+        padding: var(--padding-container);
+    }
+
+    .draggable-element {
+        background-color: var(--bg-primary);
+
+        border-radius: calc(var(--container-border-radius) - var(--padding-container));
+
+        display: flex;
+        align-items: center;
+
+        height: 50px;
+
+        width: 100%;
+
+        overflow: hidden;
+
+        &__image {
+            @include fit-image;
+
+            aspect-ratio: 1/1;
+            height: 35px;
+
+            border-radius: 50%;
+        }
+
+        &__icon-container {
+            width: 25%;
+
+            @include center-flex;
+            height: inherit;
+        }
+
+        &__icon {
+            scale: 250%;
+        }
+
+        &__text-image-container {
+            width: 75%;
+
+            display: flex;
+            align-items: center;
+
+            gap: 20px;
+        }
+    }
+}

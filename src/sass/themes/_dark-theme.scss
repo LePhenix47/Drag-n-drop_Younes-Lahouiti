@@ -8,6 +8,8 @@
 
         --color-primary: white;
 
+        --semi-transparent-bg: rgba(0, 0, 0, 50%);
+
         --scrollbar-track-bg-color: black;
         --scrollbar-thumb-bg-color: #ababab;
         --scrollbar-thumb-bg-color--hover: #8a8a8a;
@@ -29,5 +31,9 @@
         --scrollbar-thumb-bg-color: #ababab;
         --scrollbar-thumb-bg-color--hover: #8a8a8a;
         --scrollbar-thumb-bg-color--active: #4f4f4f;
+    }
+
+    body {
+        background-position: 100% 0% !important;
     }
 }

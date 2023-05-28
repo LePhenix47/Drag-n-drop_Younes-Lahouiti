@@ -1,4 +1,8 @@
 @use "../utils/" as *;
 
 
-.footer {}
+.footer {
+    &__paragraph {
+        padding: 20px;
+    }
+}

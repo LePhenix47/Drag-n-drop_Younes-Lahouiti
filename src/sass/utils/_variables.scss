@@ -1,11 +1,11 @@
 :root {
-    --bg-primary: hwb(0 100% 0%);
+    --bg-primary: rgb(255, 255, 255);
     --bg-secondary: #f0efef;
     --bg-tertiary: #676767;
 
     --bg-radio-button: #48c848;
 
-    --bg-canvas: white;
+    --semi-transparent-bg: rgba(255, 255, 255, 50%);
 
     --color-primary: black;
     --color-secondary: gray;
@@ -18,6 +18,9 @@
 
     --selection-bg-color: hwb(240 0% 0%);
     --selection-color: white;
+
+    --container-border-radius: 20px;
+    --padding-container: 10px;
 }
 
 ::backdrop {
