@@ -19,7 +19,9 @@ export function getRandomNumber(
   const hasInvalidArgument: boolean = min > max || max < min;
   if (hasInvalidArgument) {
     throw new Error(
-      `Unexpected error occured in the passed argument values: min > max or max < min`
+      `Unexpected error occured in the passed argument values: ${
+        min > max ? "min > max" : "max < min"
+      }`
     );
   }
 

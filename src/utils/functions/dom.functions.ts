@@ -249,9 +249,9 @@ export function replaceChildInParent(
  * @param {any} value The value to set the attribute to
  */
 export function modifyAttribute(
-  element: HTMLElement,
   property: string,
-  value: any
+  value: any,
+  element: HTMLElement
 ): void {
   element.setAttribute(property, value.toString());
 }
@@ -349,7 +349,9 @@ export function getSelectOptions(
 ): any {
   const isNotSelectElement: boolean = selectElement.tagName !== "SELECT";
   if (isNotSelectElement) {
-    throw "Error: Elmeent passed in argument is not a <select multiple>";
+    throw new Error(
+      "Error: Elmeent passed in argument is not a <select multiple>"
+    );
   }
 
   let selectedOptionsArray: HTMLOptionElement[] = Array.from(

@@ -130,7 +130,7 @@ class DraggableElement extends HTMLElement {
   }
 
   set name(newValue: string) {
-    modifyAttribute(this, "name", newValue);
+    modifyAttribute("name", newValue, this);
   }
 
   static get observedAttributes() {
@@ -139,10 +139,10 @@ class DraggableElement extends HTMLElement {
   }
 
   private enableDragging(event: PointerEvent) {
-    modifyAttribute(this, "draggable", true);
+    modifyAttribute("draggable", true, this);
   }
   private disableDragging(event: PointerEvent) {
-    modifyAttribute(this, "draggable", false);
+    modifyAttribute("draggable", false, this);
   }
 
   private addDraggingClass(event: DragEvent | TouchEvent) {
@@ -150,7 +150,7 @@ class DraggableElement extends HTMLElement {
   }
 
   private removeDraggingClass(event: DragEvent | TouchEvent) {
-    modifyAttribute(this, "draggable", false);
+    modifyAttribute("draggable", false, this);
 
     removeClass(this, "dragging");
   }
