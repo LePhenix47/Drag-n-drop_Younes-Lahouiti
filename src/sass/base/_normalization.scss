@@ -94,7 +94,7 @@ input {
     outline-color: transparent;
 
     &:hover {
-        cursor: text;
+        cursor: pointer;
     }
 
     &:focus {
@@ -172,27 +172,74 @@ option {
 
 //Reset for all the input types
 input {
+
+    &[type="text"] {
+        &:hover {
+            cursor: text;
+        }
+    }
+
     &[type="button"] {}
 
-    &[type="date"] {}
+    &[type="date"] {
+        &:hover {
+            cursor: text;
+        }
+    }
 
-    &[type="datetime"] {}
+    &[type="datetime"] {
+        &:hover {
+            cursor: text;
+        }
+    }
 
-    &[type="datetime-local"] {}
+    &[type="datetime-local"] {
+        &:hover {
+            cursor: text;
+        }
+    }
 
-    &[type="email"] {}
+    &[type="email"] {
+        &:hover {
+            cursor: text;
+        }
+    }
 
-    &[type="month"] {}
+    &[type="month"] {
+        &:hover {
+            cursor: text;
+        }
+    }
 
-    &[type="week"] {}
+    &[type="week"] {
+        &:hover {
+            cursor: text;
+        }
+    }
 
-    &[type="password"] {}
+    &[type="password"] {
+        &:hover {
+            cursor: text;
+        }
+    }
 
-    &[type="tel"] {}
+    &[type="tel"] {
+        &:hover {
+            cursor: text;
+        }
+    }
 
-    &[type="time"] {}
+    &[type="time"] {
+        &:hover {
+            cursor: text;
+        }
+    }
 
-    &[type="url"] {}
+    &[type="url"] {
+        &:hover {
+            cursor: text;
+        }
+    }
 
     &[type="submit"] {}
 
@@ -279,6 +326,14 @@ input {
     }
 
     &[type="range"] {
+        &:hover {
+            cursor: grab;
+        }
+
+        &:active {
+            cursor: grabbing;
+        }
+
         border-radius: var(--thumb-border-radius);
         //Track
         --track-width: 160px;

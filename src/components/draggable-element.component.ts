@@ -1,4 +1,4 @@
-import { error, log } from "../utils/functions/console.functions";
+import { error, log, warn } from "../utils/functions/console.functions";
 import {
   addClass,
   getAttribute,
@@ -6,6 +6,7 @@ import {
   removeClass,
   selectQuery,
 } from "../utils/functions/dom.functions";
+import { checkImageValidity } from "../utils/functions/image.functions";
 import {
   cssReset,
   darkThemeVariables,
@@ -190,18 +191,6 @@ class DraggableElement extends HTMLElement {
 
     this.addEventListener("dragend", this.removeDraggingClass);
     this.addEventListener("touchend", this.removeDraggingClass);
-
-    const image: HTMLImageElement = selectQuery(
-      ".draggable-element__image",
-      this.shadowRoot
-    ) as HTMLImageElement;
-
-    image.addEventListener("load", (e) => {
-      log("Loaded image!", e, image);
-    });
-    image.addEventListener("error", (e) => {
-      error("Image has an error!", e, image);
-    });
   }
 
   disconnectedCallback() {
@@ -218,19 +207,13 @@ class DraggableElement extends HTMLElement {
 
     this.addEventListener("dragend", this.removeDraggingClass);
     this.addEventListener("touchend", this.removeDraggingClass);
-
-    const image: HTMLImageElement = selectQuery(
-      ".draggable-element__image",
-      this.shadowRoot
-    ) as HTMLImageElement;
   }
 
-  attributeChangedCallback(
+  async attributeChangedCallback(
     name: string,
     oldValue: string | null,
     newValue: string
   ) {
-    log(this);
     switch (name) {
       case "name": {
         const paragraph: HTMLParagraphElement = selectQuery(
@@ -249,13 +232,19 @@ class DraggableElement extends HTMLElement {
           this.shadowRoot
         ) as HTMLImageElement;
 
-        const hasNoUrl: boolean = newValue === "";
-        if (hasNoUrl) {
-          log("has no URL!");
-          image.src = "./public/jpg/random-photo.jpg";
-        } else {
+        try {
+          await checkImageValidity(newValue);
+
+          log("%cSuccess!", "background:green; padding: 5px; font-size: 20px");
+
+          //We set the source of the image to the URL provided if it's valid
           image.src = newValue;
+          //
+        } catch (imageUrlError) {
+          error(imageUrlError);
+          image.src = "./public/jpg/random-photo.jpg";
         }
+
         image.alt = this.name;
         break;
       }

@@ -26,7 +26,9 @@
 
 
     &__fieldset {
-        @include center-flex-column(25px)
+        @include center-flex-column(25px);
+
+        margin-block: 25px;
     }
 
     &__legend {
@@ -35,7 +37,9 @@
         margin-bottom: 15px;
 
         text-align: center;
+
         font-weight: bold;
+        font-size: 24px;
     }
 
     &__new-card {
@@ -60,6 +64,7 @@
 
     &__upload-type-container {
         display: flex;
+        justify-content: space-evenly;
     }
 
     &__label {
@@ -71,7 +76,30 @@
 
         &--upload-type {
             @include center-flex(10px);
+
+            width: fit-content;
         }
+
+        &--image-drop {
+            @include center-flex;
+
+            @include child-border-radius-simple(15px, 10px);
+
+            border: 2px dashed currentColor;
+
+            background-color: var(--bg-primary);
+
+            min-height: 250px;
+        }
+    }
+
+    &__image {
+        //Using a naming convention to tell that it's a private CSS variable 
+        --_image-sides: 125px;
+        width: var(--_image-sides);
+        height: var(--_image-sides);
+
+        filter: invert(0%) hue-rotate(0deg);
     }
 
     &__input {
@@ -85,6 +113,27 @@
 
         &--upload-type {
             width: fit-content;
+        }
+    }
+
+    &__button {
+        width: 100%;
+        background-color: var(--bg-primary);
+
+        text-align: center;
+
+        padding: 5px;
+
+        margin-bottom: 15px;
+
+        @include child-border-radius-simple(15px, 10px);
+
+        &:hover {
+            filter: contrast(85%);
+        }
+
+        &:active {
+            filter: contrast(65%);
         }
     }
 

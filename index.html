@@ -58,6 +58,7 @@
                     </section>
 
                     <section class="index__new-card index__new-card--image">
+                        <!-- <h3 class="index__new-card index__new-card--title">Set image type:</h3> -->
                         <div class="index__upload-type-container">
                             <label for="upload-type-url" class="index__label index__label--upload-type">URL
                                 <input type="radio" name="upload-type" id="upload-type-url"
@@ -71,18 +72,19 @@
                         </div>
 
                         <div class="index__image-labels">
-                            <label class="index__label index__label--image-url" for="add-image-url">Image:
+                            <label class="index__label index__label--image-url" for="add-image-url">
                                 <input type="url" placeholder="ex: https://images.unsplash.com/..." id="add-image-url"
                                     class="index__input" />
                             </label>
 
                             <label class="index__label index__label--image-drop" for="add-image-file">
-                                <img src="./public/svg/upload-image-icon.svg" alt="Drag image">
+                                <img class="index__image" src="./public/svg/upload-image-icon.svg" alt="Drag image">
                                 <input type="file" id="add-image-file" class="index__input screen-readers-only" />
                             </label>
                         </div>
                     </section>
                 </fieldset>
+                <button type="submit" class="index__button index__submit-form">Create card</button>
             </form>
         </section>
 

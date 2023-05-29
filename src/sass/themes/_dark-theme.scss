@@ -36,4 +36,8 @@
     body {
         background-position: 100% 0% !important;
     }
+
+    .index__image {
+        filter: invert(100%) hue-rotate(180deg);
+    }
 }
