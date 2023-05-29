@@ -152,32 +152,32 @@ class DraggableElement extends HTMLElement {
   }
 
   /**
-   * Gets the value of the "name" attribute.
-   * @returns {string} The value of the "name" attribute.
+   * Gets the value of the `name` attribute.
+   * @returns {string} The value of the `name` attribute.
    */
   get name(): string {
     return getAttribute("name", this);
   }
 
   /**
-   * Sets the value of the "name" attribute.
-   * @param {string} newValue - The new value for the "name" attribute.
+   * Sets the value of the `name` attribute.
+   * @param {string} newValue - The new value for the `name` attribute.
    */
   set name(newValue: string) {
     modifyAttribute("name", newValue, this);
   }
 
   /**
-   * Gets the value of the "image-url" attribute.
-   * @returns {string} The value of the "image-url" attribute.
+   * Gets the value of the `image-url` attribute.
+   * @returns {string} The value of the `image-url` attribute.
    */
   get imageUrl(): string {
     return getAttribute("image-url", this);
   }
 
   /**
-   * Sets the value of the "image-url" attribute.
-   * @param {string} newValue - The new value for the "image-url" attribute.
+   * Sets the value of the `image-url` attribute.
+   * @param {string} newValue - The new value for the `image-url` attribute.
    */
   set imageUrl(newValue: string) {
     modifyAttribute("image-url", newValue, this);
@@ -194,44 +194,49 @@ class DraggableElement extends HTMLElement {
   /**
    * Enables dragging of the draggable element.
    * @param {PointerEvent} event - The pointer event that triggered the enable dragging action.
+   * @returns {void}
    * @private
    */
-  private enableDragging(event: PointerEvent) {
+  private enableDragging(event: PointerEvent): void {
     modifyAttribute("draggable", true, this);
   }
 
   /**
    * Disables dragging of the draggable element.
    * @param {PointerEvent} event - The pointer event that triggered the disable dragging action.
+   * @returns {void}
    * @private
    */
-  private disableDragging(event: PointerEvent) {
+  private disableDragging(event: PointerEvent): void {
     modifyAttribute("draggable", false, this);
   }
 
   /**
    * Adds the "dragging" class to the draggable element.
    * @param {DragEvent | TouchEvent} event - The drag event or touch event that triggered the adding of the class.
+   * @returns {void}
    * @private
    */
-  private addDraggingClass(event: DragEvent | TouchEvent) {
+  private addDraggingClass(event: DragEvent | TouchEvent): void {
     addClass(this, "dragging");
   }
 
   /**
    * Removes the "dragging" class from the draggable element.
    * @param {DragEvent | TouchEvent} event - The drag event or touch event that triggered the removing of the class.
+   * @returns {void}
    * @private
    */
-  private removeDraggingClass(event: DragEvent | TouchEvent) {
+  private removeDraggingClass(event: DragEvent | TouchEvent): void {
     modifyAttribute("draggable", false, this);
     removeClass(this, "dragging");
   }
 
   /**
    * Called when the element is connected to the DOM.
+   * @returns {void}
    */
-  connectedCallback() {
+  connectedCallback(): void {
     const iconContainer: HTMLElement = selectQuery(
       ".draggable-element__icon-container",
       this.shadowRoot
@@ -249,8 +254,9 @@ class DraggableElement extends HTMLElement {
 
   /**
    * Called when the element is disconnected from the DOM.
+   * @returns {void}
    */
-  disconnectedCallback() {
+  disconnectedCallback(): void {
     const iconContainer: HTMLElement = selectQuery(
       ".draggable-element__icon-container",
       this.shadowRoot
@@ -272,13 +278,15 @@ class DraggableElement extends HTMLElement {
    * @param {string|null} oldValue - The previous value of the attribute.
    * @param {string} newValue - The new value of the attribute.
    *
+   * @returns {Promise<void>}
+   *
    * @async - Asychronous when changing the image URL
    */
   async attributeChangedCallback(
     name: string,
     oldValue: string | null,
     newValue: string
-  ) {
+  ): Promise<void> {
     switch (name) {
       case "name": {
         const paragraph: HTMLParagraphElement = selectQuery(
