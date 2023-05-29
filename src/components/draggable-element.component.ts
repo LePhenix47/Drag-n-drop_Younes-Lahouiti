@@ -13,9 +13,10 @@ import {
   lightThemeVariables,
 } from "../utils/variables/web-component.variables";
 
-const draggableTemplateElement = document.createElement("template");
+const draggableTemplateElement: HTMLTemplateElement =
+  document.createElement("template");
 
-const draggableTemplateCssStyle = /* css */ `
+const draggableTemplateCssStyle: string = /* css */ `
 
 .draggable-element {
     align-items: center;
@@ -74,8 +75,20 @@ const draggableTemplateCssStyle = /* css */ `
     gap: 20px;
     width: 75%;
 }
+
+.draggable-element__paragraph{
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+@media(prefers-color-scheme:dark){
+  .draggable-element__image{
+    filter: invert(100%) hue-rotate(180deg);
+  }
+}
 `;
-const draggableTemplateHtmlContent = /*html */ `
+const draggableTemplateHtmlContent: string = /*html */ `
   <div class="draggable-element">
       <div class="draggable-element__icon-container">
           <svg class="draggable-element__icon no-pointer-events" xmlns="http://www.w3.org/2000/svg" width="16"
@@ -86,7 +99,7 @@ const draggableTemplateHtmlContent = /*html */ `
           </svg>
       </div>
       <div class="draggable-element__text-image-container">
-          <img class="draggable-element__image" src="../../public/jpg/random-photo.jpg" />
+          <img class="draggable-element__image" src=""  alt=""/>
           <p class="draggable-element__paragraph">Name 1234</p>
       </div>
   </div>
@@ -133,9 +146,17 @@ class DraggableElement extends HTMLElement {
     modifyAttribute("name", newValue, this);
   }
 
+  get imageUrl() {
+    return getAttribute("image-url", this);
+  }
+
+  set imageUrl(newValue: string) {
+    modifyAttribute("image-url", newValue, this);
+  }
+
   static get observedAttributes() {
     //We indicate the list of attributes that the custom element wants to observe for changes.
-    return ["name"];
+    return ["name", "image-url"];
   }
 
   private enableDragging(event: PointerEvent) {
@@ -187,7 +208,12 @@ class DraggableElement extends HTMLElement {
     this.addEventListener("touchend", this.removeDraggingClass);
   }
 
-  attributeChangedCallback(name, oldValue, newValue) {
+  attributeChangedCallback(
+    name: string,
+    oldValue: string | null,
+    newValue: string
+  ) {
+    log(this);
     switch (name) {
       case "name": {
         const paragraph: HTMLParagraphElement = selectQuery(
@@ -195,12 +221,26 @@ class DraggableElement extends HTMLElement {
           this.shadowRoot
         ) as HTMLParagraphElement;
 
-        log(paragraph);
-
         paragraph.textContent = newValue;
         //…
         break;
       }
+
+      case "image-url": {
+        const image: HTMLImageElement = selectQuery(
+          ".draggable-element__image",
+          this.shadowRoot
+        ) as HTMLImageElement;
+
+        const hasNoUrl: boolean = newValue === "";
+        if (hasNoUrl) {
+          log("has no URL!");
+          image.src = "./public/jpg/random-photo.jpg";
+          image.alt = this.name;
+        }
+        break;
+      }
+
       default:
         break;
     }

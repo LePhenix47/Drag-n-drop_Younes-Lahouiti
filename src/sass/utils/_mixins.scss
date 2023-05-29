@@ -107,3 +107,8 @@
 
     overflow: hidden;
 }
+
+// Mixin for setting child element border radius with a single padding gap
+@mixin child-border-radius-simple($parent-radius, $child-gap) {
+    border-radius: calc(#{$parent-radius} - #{$child-gap});
+}

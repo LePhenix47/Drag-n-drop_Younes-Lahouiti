@@ -50,21 +50,54 @@
                 <fieldset class="index__fieldset">
                     <legend class="index__legend">Add a new card</legend>
 
-                    <label class="index__label" for="add-card">Name:
-                        <input type="text" id="add-card" class="index__input" />
-                    </label>
+                    <section class="index__new-card index__new-card--name">
+
+                        <label class="index__label" for="add-card">Name:
+                            <input type="text" placeholder="ex: Rick Ashley" id="add-card" class="index__input" />
+                        </label>
+                    </section>
+
+                    <section class="index__new-card index__new-card--image">
+                        <div class="index__upload-type-container">
+                            <label for="upload-type-url" class="index__label index__label--upload-type">URL
+                                <input type="radio" name="upload-type" id="upload-type-url"
+                                    class="index__input index__input--upload-type" checked />
+                            </label>
+
+                            <label for="upload-type-drop" class="index__label index__label--upload-type">Drop locally
+                                <input type="radio" name="upload-type" id="upload-type-drop"
+                                    class="index__input index__input--upload-type" />
+                            </label>
+                        </div>
+
+                        <div class="index__image-labels">
+                            <label class="index__label index__label--image-url" for="add-image-url">Image:
+                                <input type="url" placeholder="ex: https://images.unsplash.com/..." id="add-image-url"
+                                    class="index__input" />
+                            </label>
+
+                            <label class="index__label index__label--image-drop" for="add-image-file">Image:
+                                <input type="file" id="add-image-file" class="index__input screen-readers-only" />
+                            </label>
+                        </div>
+                    </section>
                 </fieldset>
             </form>
         </section>
 
         <section class="index__containers">
             <section class="index__container">
-                <draggable-element class="index__draggable" draggable="false"
+                <draggable-element class="index__draggable" draggable="false" image-url=""
                     name="Younes Lahouiti"></draggable-element>
+                <draggable-element class="index__draggable" draggable="false" image-url=""
+                    name="Kyle Cook"></draggable-element>
+                <draggable-element class="index__draggable" draggable="false" image-url=""
+                    name="Kevin Powell"></draggable-element>
             </section>
-            <section class="index__container"><draggable-element class="index__draggable" draggable="false"
+            <section class="index__container"><draggable-element class="index__draggable" draggable="false" image-url=""
                     name="Radu Mariescu-Istodor"></draggable-element>
-                <draggable-element class="index__draggable" draggable="false" name="Frank"></draggable-element>
+                <draggable-element class="index__draggable" draggable="false" image-url=""
+                    name="Frank"></draggable-element>
             </section>
         </section>
     </main>
