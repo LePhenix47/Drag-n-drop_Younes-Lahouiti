@@ -1,4 +1,4 @@
-import { error } from "./console.functions";
+import { error, warn } from "./console.functions";
 import { splitString } from "./string.functions";
 
 /**
@@ -81,7 +81,13 @@ export function logarithm(value: number, base: number = Math.E): number {
   //since log(1) = 0 and logₙ(x) = log(x)/log(n), a base of 1 would give a division by 0
   const baseIsInvalid: boolean = base <= 0 || base === 1;
   if (baseIsInvalid) {
-    error("The base of the logarithm is invalid");
+    warn(
+      `The base of the logarithm is invalid: ${
+        base <= 0
+          ? "the base is negative or null"
+          : "the base returns a division by 0"
+      }`
+    );
     return NaN;
   }
 
