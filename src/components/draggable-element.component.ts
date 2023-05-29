@@ -120,7 +120,19 @@ draggableTemplateElement.innerHTML = /*html */ `
   ${draggableTemplateHtmlContent}
 `;
 
+/**
+ * Custom element representing a draggable element.
+ *
+ * @class DraggableElement
+ * @extends {HTMLElement}
+ */
 class DraggableElement extends HTMLElement {
+  /**
+   * Constructs a new DraggableElement.
+   *
+   * @constructor
+
+   */
   constructor() {
     super();
     //We create the cotnainer that holds the web component
@@ -131,7 +143,7 @@ class DraggableElement extends HTMLElement {
     //We add it as a child of our web component
     shadowRoot.appendChild(clonedTemplate);
 
-    //We bind the this keyword to have access to the shadow root
+    // Bind methods to the instance
     this.enableDragging = this.enableDragging.bind(this);
     this.disableDragging = this.disableDragging.bind(this);
 
@@ -139,44 +151,86 @@ class DraggableElement extends HTMLElement {
     this.removeDraggingClass = this.removeDraggingClass.bind(this);
   }
 
-  get name() {
+  /**
+   * Gets the value of the "name" attribute.
+   * @returns {string} The value of the "name" attribute.
+   */
+  get name(): string {
     return getAttribute("name", this);
   }
 
+  /**
+   * Sets the value of the "name" attribute.
+   * @param {string} newValue - The new value for the "name" attribute.
+   */
   set name(newValue: string) {
     modifyAttribute("name", newValue, this);
   }
 
-  get imageUrl() {
+  /**
+   * Gets the value of the "image-url" attribute.
+   * @returns {string} The value of the "image-url" attribute.
+   */
+  get imageUrl(): string {
     return getAttribute("image-url", this);
   }
 
+  /**
+   * Sets the value of the "image-url" attribute.
+   * @param {string} newValue - The new value for the "image-url" attribute.
+   */
   set imageUrl(newValue: string) {
     modifyAttribute("image-url", newValue, this);
   }
 
-  static get observedAttributes() {
-    //We indicate the list of attributes that the custom element wants to observe for changes.
+  /**
+   * Specifies the attributes to observe for changes.
+   * @returns {string[]} An array of attribute names to observe.
+   */
+  static get observedAttributes(): string[] {
     return ["name", "image-url"];
   }
 
+  /**
+   * Enables dragging of the draggable element.
+   * @param {PointerEvent} event - The pointer event that triggered the enable dragging action.
+   * @private
+   */
   private enableDragging(event: PointerEvent) {
     modifyAttribute("draggable", true, this);
   }
+
+  /**
+   * Disables dragging of the draggable element.
+   * @param {PointerEvent} event - The pointer event that triggered the disable dragging action.
+   * @private
+   */
   private disableDragging(event: PointerEvent) {
     modifyAttribute("draggable", false, this);
   }
 
+  /**
+   * Adds the "dragging" class to the draggable element.
+   * @param {DragEvent | TouchEvent} event - The drag event or touch event that triggered the adding of the class.
+   * @private
+   */
   private addDraggingClass(event: DragEvent | TouchEvent) {
     addClass(this, "dragging");
   }
 
+  /**
+   * Removes the "dragging" class from the draggable element.
+   * @param {DragEvent | TouchEvent} event - The drag event or touch event that triggered the removing of the class.
+   * @private
+   */
   private removeDraggingClass(event: DragEvent | TouchEvent) {
     modifyAttribute("draggable", false, this);
-
     removeClass(this, "dragging");
   }
 
+  /**
+   * Called when the element is connected to the DOM.
+   */
   connectedCallback() {
     const iconContainer: HTMLElement = selectQuery(
       ".draggable-element__icon-container",
@@ -193,6 +247,9 @@ class DraggableElement extends HTMLElement {
     this.addEventListener("touchend", this.removeDraggingClass);
   }
 
+  /**
+   * Called when the element is disconnected from the DOM.
+   */
   disconnectedCallback() {
     const iconContainer: HTMLElement = selectQuery(
       ".draggable-element__icon-container",
@@ -209,6 +266,14 @@ class DraggableElement extends HTMLElement {
     this.addEventListener("touchend", this.removeDraggingClass);
   }
 
+  /**
+   * Called when observed attributes are modified.
+   * @param {string} name - The name of the attribute that changed.
+   * @param {string|null} oldValue - The previous value of the attribute.
+   * @param {string} newValue - The new value of the attribute.
+   *
+   * @async - Asychronous when changing the image URL
+   */
   async attributeChangedCallback(
     name: string,
     oldValue: string | null,
@@ -235,11 +300,10 @@ class DraggableElement extends HTMLElement {
         try {
           await checkImageValidity(newValue);
 
-          log("%cSuccess!", "background:green; padding: 5px; font-size: 20px");
-
           //We set the source of the image to the URL provided if it's valid
           image.src = newValue;
           //
+          log("%cSuccess!", "background:green; padding: 5px; font-size: 20px");
         } catch (imageUrlError) {
           error(imageUrlError);
           image.src = "./public/jpg/random-photo.jpg";
