@@ -150,12 +150,7 @@ class DraggableElement extends HTMLElement {
   }
 
   private removeDraggingClass(event: DragEvent) {
-    const iconContainer: HTMLElement = selectQuery(
-      ".draggable-element__icon-container",
-      this.shadowRoot
-    );
-
-    iconContainer.click();
+    modifyAttribute(this, "draggable", false);
 
     removeClass(this, "dragging");
   }

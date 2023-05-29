@@ -1,15 +1,17 @@
 @use "../utils/" as *;
 
 .index {
-    min-height: calc(100vh - 35px * 4);
+    &__containers {
+        min-height: calc(100vh - 35px * 4);
 
-    @include center-flex(50px);
+        @include center-flex(50px);
 
-    @include mobile-only {
-        @include center-flex-column(50px);
+        @include mobile-only {
+            @include center-flex-column(50px);
+        }
+
+        padding: 50px;
     }
-
-    padding: 50px;
 
     &__container {
         background-color: var(--semi-transparent-bg);
