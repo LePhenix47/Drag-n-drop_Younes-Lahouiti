@@ -1,4 +1,4 @@
-import { log } from "../utils/functions/console.functions";
+import { error, log } from "../utils/functions/console.functions";
 import {
   addClass,
   getAttribute,
@@ -190,6 +190,18 @@ class DraggableElement extends HTMLElement {
 
     this.addEventListener("dragend", this.removeDraggingClass);
     this.addEventListener("touchend", this.removeDraggingClass);
+
+    const image: HTMLImageElement = selectQuery(
+      ".draggable-element__image",
+      this.shadowRoot
+    ) as HTMLImageElement;
+
+    image.addEventListener("load", (e) => {
+      log("Loaded image!", e, image);
+    });
+    image.addEventListener("error", (e) => {
+      error("Image has an error!", e, image);
+    });
   }
 
   disconnectedCallback() {
@@ -206,6 +218,11 @@ class DraggableElement extends HTMLElement {
 
     this.addEventListener("dragend", this.removeDraggingClass);
     this.addEventListener("touchend", this.removeDraggingClass);
+
+    const image: HTMLImageElement = selectQuery(
+      ".draggable-element__image",
+      this.shadowRoot
+    ) as HTMLImageElement;
   }
 
   attributeChangedCallback(
@@ -236,8 +253,10 @@ class DraggableElement extends HTMLElement {
         if (hasNoUrl) {
           log("has no URL!");
           image.src = "./public/jpg/random-photo.jpg";
-          image.alt = this.name;
+        } else {
+          image.src = newValue;
         }
+        image.alt = this.name;
         break;
       }
 
