@@ -14,6 +14,10 @@
     &__container {
         background-color: var(--semi-transparent-bg);
 
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
         min-height: 500px;
         width: 50%;
 
@@ -26,47 +30,13 @@
         padding: var(--padding-container);
     }
 
-    .draggable-element {
-        background-color: var(--bg-primary);
+    &__draggable {
 
-        border-radius: calc(var(--container-border-radius) - var(--padding-container));
+        &.dragging {
+            cursor: grabbing;
 
-        display: flex;
-        align-items: center;
-
-        height: 50px;
-
-        width: 100%;
-
-        overflow: hidden;
-
-        &__image {
-            @include fit-image;
-
-            aspect-ratio: 1/1;
-            height: 35px;
-
-            border-radius: 50%;
-        }
-
-        &__icon-container {
-            width: 25%;
-
-            @include center-flex;
-            height: inherit;
-        }
-
-        &__icon {
-            scale: 250%;
-        }
-
-        &__text-image-container {
-            width: 75%;
-
-            display: flex;
-            align-items: center;
-
-            gap: 20px;
+            filter: invert(100%) hue-rotate(180deg);
+            opacity: 50%;
         }
     }
 }
