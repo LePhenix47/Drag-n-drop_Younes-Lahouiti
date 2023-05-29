@@ -165,7 +165,10 @@ class DraggableElement extends HTMLElement {
     iconContainer.addEventListener("pointerup", this.disableDragging);
 
     this.addEventListener("dragstart", this.addDraggingClass);
+    this.addEventListener("touchstart", this.addDraggingClass);
+
     this.addEventListener("dragend", this.removeDraggingClass);
+    this.addEventListener("touchend", this.removeDraggingClass);
   }
 
   disconnectedCallback() {
@@ -177,8 +180,11 @@ class DraggableElement extends HTMLElement {
     iconContainer.removeEventListener("pointerdown", this.enableDragging);
     iconContainer.removeEventListener("pointerup", this.disableDragging);
 
-    this.removeEventListener("dragstart", this.addDraggingClass);
-    this.removeEventListener("dragend", this.removeDraggingClass);
+    this.addEventListener("dragstart", this.addDraggingClass);
+    this.addEventListener("touchstart", this.addDraggingClass);
+
+    this.addEventListener("dragend", this.removeDraggingClass);
+    this.addEventListener("touchend", this.removeDraggingClass);
   }
 
   attributeChangedCallback(name, oldValue, newValue) {

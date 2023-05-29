@@ -2,6 +2,8 @@
 
 .index {
     &__containers {
+        touch-action: none;
+
         min-height: calc(100vh - 35px * 4);
 
         @include center-flex(50px);
@@ -25,6 +27,8 @@
 
         @include mobile-only {
             width: 100%;
+
+            min-height: 0;
         }
 
         border-radius: var(--container-border-radius);

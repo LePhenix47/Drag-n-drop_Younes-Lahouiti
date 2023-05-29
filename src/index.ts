@@ -15,25 +15,35 @@ function addContainerEventListeners() {
 
   for (const container of containersArray) {
     container.addEventListener("dragover", handleDraggingElementDragOver);
+    container.addEventListener("touchmove", handleDraggingElementDragOver);
   }
 }
 addContainerEventListeners();
 
-function handleDraggingElementDragOver(event: DragEvent) {
+function handleDraggingElementDragOver(event: DragEvent | TouchEvent) {
   //Prevent the default behavior of the browser to enable element dropping
   event.preventDefault();
 
-  //@ts-ignore
-  const container: HTMLElement = event.currentTarget;
+  const container: HTMLElement = event.currentTarget as HTMLElement;
 
-  const mouseYPosition: number = event.clientY;
+  const pointerYPosition: number =
+    //@ts-ignore
+    event.type === "dragover" ? event.clientY : event.touches[0].clientY;
+  log(pointerYPosition);
 
   const draggedDraggable: HTMLElement = selectQuery(".dragging");
+
+  const hasNoDraggable: boolean = !draggedDraggable;
+  if (hasNoDraggable) {
+    throw new Error("No draggable was found!");
+  }
+
+  log(draggedDraggable);
 
   //Closest element from the mouse
   const closestElement: HTMLElement | null = getClosestElementFromMouse(
     container,
-    mouseYPosition
+    pointerYPosition
   );
   //
   const hasNoAfterElement: boolean = closestElement === null;
@@ -48,7 +58,7 @@ function handleDraggingElementDragOver(event: DragEvent) {
 
 function getClosestElementFromMouse(
   container: HTMLElement,
-  mouseYPosition: number,
+  pointerYPosition: number,
   findVertically: boolean = true
 ): HTMLElement | null {
   const staticDraggablesArray: HTMLElement[] = selectQueryAll(
@@ -66,13 +76,13 @@ function getClosestElementFromMouse(
     const { top, height, left, width } = draggableRect;
 
     const currentOffset: number = findVertically
-      ? mouseYPosition - (top + height / 2)
-      : mouseYPosition - (left + width / 2);
+      ? pointerYPosition - (top + height / 2)
+      : pointerYPosition - (left + width / 2);
 
     const isAboveAfterElement: boolean = currentOffset < 0;
-    const hasGreaterOffset: boolean = currentOffset > closestOffset;
+    const hasGreatestOffset: boolean = currentOffset > closestOffset;
 
-    if (isAboveAfterElement && hasGreaterOffset) {
+    if (isAboveAfterElement && hasGreatestOffset) {
       closestOffset = currentOffset;
       closestElement = staticDraggable;
     }
