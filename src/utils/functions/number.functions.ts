@@ -82,10 +82,8 @@ export function logarithm(value: number, base: number = Math.E): number {
   const baseIsInvalid: boolean = base <= 0 || base === 1;
   if (baseIsInvalid) {
     warn(
-      `The base of the logarithm is invalid: ${
-        base <= 0
-          ? "the base is negative or null"
-          : "the base returns a division by 0"
+      `The base of the logarithm ${
+        base <= 0 ? "is negative or null" : "returns a division by 0"
       }`
     );
     return NaN;

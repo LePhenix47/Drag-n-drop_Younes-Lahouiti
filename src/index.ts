@@ -30,7 +30,6 @@ function handleDraggingElementDragOver(event: DragEvent | TouchEvent) {
     event.type === "dragover"
       ? (event as DragEvent).clientY
       : (event as TouchEvent).touches[0].clientY;
-  log(pointerYPosition);
 
   const draggedDraggable: HTMLElement = selectQuery(".dragging") as HTMLElement;
 

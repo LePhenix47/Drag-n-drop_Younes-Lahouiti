@@ -1,18 +1,45 @@
 @use "../utils/" as *;
 
 .index {
+    min-height: 50vh;
+
+    @include mobile-only {
+        min-height: 85vh;
+    }
+
+    width: 90%;
+    margin-inline: auto;
+
+    margin-block: 15px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+
+    &__form {
+        background-color: var(--semi-transparent-bg);
+
+        border-radius: 15px;
+
+        padding: 10px 20px;
+    }
+
+    &__fieldset {}
+
+    &__legend {
+        width: 100%;
+        text-align: center;
+    }
+
+
     &__containers {
         touch-action: none;
-
-        min-height: calc(100vh - 35px * 4);
 
         @include center-flex(50px);
 
         @include mobile-only {
             @include center-flex-column(50px);
         }
-
-        padding: 50px;
     }
 
     &__container {
