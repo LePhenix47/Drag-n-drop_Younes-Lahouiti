@@ -11,7 +11,7 @@ import {
   darkThemeVariables,
   jsClasses,
   lightThemeVariables,
-} from "../utils/vairables/web-component.variables";
+} from "../utils/variables/web-component.variables";
 
 const draggableTemplateElement = document.createElement("template");
 
@@ -145,11 +145,11 @@ class DraggableElement extends HTMLElement {
     modifyAttribute(this, "draggable", false);
   }
 
-  private addDraggingClass(event: DragEvent) {
+  private addDraggingClass(event: DragEvent | TouchEvent) {
     addClass(this, "dragging");
   }
 
-  private removeDraggingClass(event: DragEvent) {
+  private removeDraggingClass(event: DragEvent | TouchEvent) {
     modifyAttribute(this, "draggable", false);
 
     removeClass(this, "dragging");
@@ -193,7 +193,7 @@ class DraggableElement extends HTMLElement {
         const paragraph: HTMLParagraphElement = selectQuery(
           ".draggable-element__paragraph",
           this.shadowRoot
-        );
+        ) as HTMLParagraphElement;
 
         log(paragraph);
 

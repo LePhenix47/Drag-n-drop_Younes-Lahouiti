@@ -27,18 +27,17 @@ function handleDraggingElementDragOver(event: DragEvent | TouchEvent) {
   const container: HTMLElement = event.currentTarget as HTMLElement;
 
   const pointerYPosition: number =
-    //@ts-ignore
-    event.type === "dragover" ? event.clientY : event.touches[0].clientY;
+    event.type === "dragover"
+      ? (event as DragEvent).clientY
+      : (event as TouchEvent).touches[0].clientY;
   log(pointerYPosition);
 
-  const draggedDraggable: HTMLElement = selectQuery(".dragging");
+  const draggedDraggable: HTMLElement = selectQuery(".dragging") as HTMLElement;
 
   const hasNoDraggable: boolean = !draggedDraggable;
   if (hasNoDraggable) {
     throw new Error("No draggable was found!");
   }
-
-  log(draggedDraggable);
 
   //Closest element from the mouse
   const closestElement: HTMLElement | null = getClosestElementFromMouse(
@@ -64,7 +63,7 @@ function getClosestElementFromMouse(
   const staticDraggablesArray: HTMLElement[] = selectQueryAll(
     ".index__draggable:not(.dragging)",
     container
-  );
+  ) as HTMLElement[];
 
   //We initialize 2 variables to get the closest element
   //and the the closest offset nearing the most 0
@@ -72,9 +71,11 @@ function getClosestElementFromMouse(
   let closestOffset: number = Number.NEGATIVE_INFINITY;
 
   for (const staticDraggable of staticDraggablesArray) {
+    //We get the cooridnates and dimensions of the draggable
     const draggableRect: DOMRect = staticDraggable.getBoundingClientRect();
     const { top, height, left, width } = draggableRect;
 
+    //We compute the offset between the draggable and the mouse position
     const currentOffset: number = findVertically
       ? pointerYPosition - (top + height / 2)
       : pointerYPosition - (left + width / 2);

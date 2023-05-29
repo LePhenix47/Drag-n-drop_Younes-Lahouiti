@@ -7,6 +7,8 @@ import { log } from "./console.functions";
  * @param {string} string - The string to format.
  * @param {string} option - The option to use for formatting. Valid options are "lowercase", "uppercase", "titlecase" or "titlecase2".
  *
+ * titlecase is for every word in the string and titlecase 2 only for the first word
+ *
  * @returns {string} The formatted string
  *
  * @throws {Error} If an invalid option is provided.

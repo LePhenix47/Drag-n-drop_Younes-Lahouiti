@@ -7,12 +7,17 @@ import { log, table } from "./console.functions";
  * @param {string} className - The class name of the elements to select.
  * @param {any} container - The parent element to search within.
  *
- * @returns {any[]} A collection of elements with the specified class name.
+ * @returns {HTMLElement[]|[]} A collection of elements with the specified class name.
  */
-export function selectByClass(className: string, container?: any): any[] {
+export function selectByClass(
+  className: string,
+  container?: any
+): HTMLElement[] | [] {
   const hasNoParentContainer = !container;
   if (hasNoParentContainer) {
-    return Array.from(document.getElementsByClassName(className));
+    return Array.from(
+      document.getElementsByClassName(className)
+    ) as HTMLElement[];
   }
 
   /**
@@ -21,9 +26,13 @@ export function selectByClass(className: string, container?: any): any[] {
   const containerIsWebComponent: boolean = container?.tagName?.includes("-");
 
   if (containerIsWebComponent) {
-    return Array.from(container.shadowRoot.getElementsByClassName(className));
+    return Array.from(
+      container.shadowRoot.getElementsByClassName(className)
+    ) as HTMLElement[];
   }
-  return Array.from(container.getElementsByClassName(className));
+  return Array.from(
+    container.getElementsByClassName(className)
+  ) as HTMLElement[];
 }
 
 /**
@@ -33,9 +42,9 @@ export function selectByClass(className: string, container?: any): any[] {
  * @param {string} id - The ID of the element to select.
  * @param {any} container - The parent element to search within.
  *
- * @returns {any} The element with the specified ID.
+ * @returns {HTMLElement} The element with the specified ID.
  */
-export function selectById(id: string, container?: any): any {
+export function selectById(id: string, container?: any): HTMLElement {
   const hasNoParentContainer = !container;
   if (hasNoParentContainer) {
     return document.getElementById(id);
@@ -58,10 +67,10 @@ export function selectById(id: string, container?: any): any {
  * @param {string} query - CSS query of the HTML Element to select
  * @param {any} container - HTML Element to select the query from
  *
- * @returns  - The element selected or `null` if the element doesn't exist
+ * @returns {HTMLElement} - The element selected or `null` if the element doesn't exist
  */
 
-export function selectQuery(query: string, container?: any): any {
+export function selectQuery(query: string, container?: any): HTMLElement {
   const hasNoParentContainer: boolean = !container;
   if (hasNoParentContainer) {
     return document.querySelector(query);
@@ -83,9 +92,12 @@ export function selectQuery(query: string, container?: any): any {
  *
  * @param {string} query - CSS query of the HTML Elements to select
  * @param {any} container - HTML Element to select the query from
- * @returns {any[]|null} - An array with all the elements selected or `null` if the element doesn't exist
+ * @returns {HTMLElement[] | []} - An array with all the elements selected or `null` if the element doesn't exist
  */
-export function selectQueryAll(query: string, container?: any): any[] {
+export function selectQueryAll(
+  query: string,
+  container?: any
+): HTMLElement[] | [] {
   const hasNoParentContainer: boolean = !container;
   if (hasNoParentContainer) {
     return Array.from(document.querySelectorAll(query));
@@ -103,69 +115,80 @@ export function selectQueryAll(query: string, container?: any): any[] {
 /**
  * Function that returns an array containing all child nodes of an HTML element.
  *
- * @param {any} elementOfReference The parent HTML element whose children to select.
- * @returns {any[]} An array containing all child nodes of the parent element or null if the parent element has no children.
+ * @param {HTMLElement} elementOfReference The parent HTML element whose children to select.
+ * @returns {HTMLElement[]} An array containing all child nodes of the parent element or null if the parent element has no children.
  */
-export function getChildren(elementOfReference: any | null): any[] {
+export function getChildren(elementOfReference: any | null): HTMLElement[] {
   return Array.from(elementOfReference.children);
 }
 
 /**
  * Returns the parent element of a given element.
  * @param {HTMLElement} elementOfReference - The child element for which to find the parent.
- * @returns {any} - The parent element of the child element, or null if the parent cannot be found.
+ * @returns {HTMLElement} - The parent element of the child element, or null if the parent cannot be found.
  */
-export function getParent(elementOfReference: HTMLElement): any {
+export function getParent(elementOfReference: HTMLElement): HTMLElement {
   return elementOfReference.parentElement;
 }
 
 /**
  * Returns the closest ancestor element of a given HTML element based on a CSS selector.
  *
- * @param {any} elementOfReference - The HTML element of reference.
+ * @param {HTMLElement} elementOfReference - The HTML element of reference.
  * @param {string} cssSelector - The CSS selector to use to select the ancestor element. Default is an empty string.
  *
- * @returns {any|null} The closest ancestor element that matches the CSS selector, or null if no ancestor element matches the selector.
+ * @returns {HTMLElement|null} The closest ancestor element that matches the CSS selector, or null if no ancestor element matches the selector.
  */
 
 export function getAncestor(
-  elementOfReference: any,
+  elementOfReference: HTMLElement,
   cssSelector: string
-): any | null {
+): HTMLElement | null {
   return elementOfReference.closest(cssSelector);
 }
 
 /**
  *Returns the host element of a web component given a reference element within it.
  *
- *@param {any} elementOfReference - An element that is a child of the web component.
+ *@param {HTMLElement} elementOfReference - An element that is a child of the web component.
  *
- * @returns {any} - The host element of the web component.
+ * @returns {ShadowRoot | null} - The host element of the web component.
  */
 
-export function getComponentHost(elementOfReference: any): any {
-  return elementOfReference.getRootNode().host;
+export function getComponentHost(
+  elementOfReference: HTMLElement
+): ShadowRoot | null {
+  const rootNode: Node = elementOfReference.getRootNode();
+
+  const elementIsInShadowRoot = rootNode instanceof ShadowRoot;
+  if (elementIsInShadowRoot) {
+    return rootNode;
+  } else {
+    return null;
+  }
 }
 
 /**
  * Returns the next sibling element of the specified element.
  *
- * @param {any} elementOfReference - The reference element whose sibling to return.
+ * @param {HTMLElement} elementOfReference - The reference element whose sibling to return.
  * @returns {any | null} The next sibling element, or null if there is none.
  */
-export function getSibling(elementOfReference: any): any | null {
-  return elementOfReference.nextElementSibling;
+export function getSibling(
+  elementOfReference: HTMLElement
+): HTMLElement | null {
+  return elementOfReference.nextElementSibling as HTMLElement;
 }
 
 /**
  *
  * Returns an array of strings representing the classes of the specified element.
  *
- * @param {any} elementOfReference - The element to retrieve class values from.
+ * @param {HTMLElement} elementOfReference - The element to retrieve class values from.
  *
  * @returns An array of strings representing the classes of the specified element.
  */
-export function getClassListValues(elementOfReference: any): string[] {
+export function getClassListValues(elementOfReference: HTMLElement): string[] {
   return Array.from(elementOfReference.classList);
 }
 
@@ -181,7 +204,7 @@ export function getClassListValues(elementOfReference: any): string[] {
 export function setStyleProperty(
   property: string,
   value: any,
-  element: any = document.body
+  element: HTMLElement = document.body
 ): void {
   const stringifiedValue = value.toString();
   return element.style.setProperty(property, stringifiedValue);
@@ -195,8 +218,8 @@ export function setStyleProperty(
  * @returns {HTMLElement} - The appended child element
  */
 export function appendChildToParent(
-  childElement: any,
-  parentElement: any
+  childElement: HTMLElement,
+  parentElement: HTMLElement
 ): HTMLElement {
   return parentElement.appendChild(childElement);
 }
@@ -209,9 +232,9 @@ export function appendChildToParent(
  * @returns {void} - The replaced child element
  */
 export function replaceChildInParent(
-  parentElement: any,
-  newChild: any,
-  oldChild: any
+  parentElement: HTMLElement,
+  newChild: HTMLElement,
+  oldChild: HTMLElement
 ): void {
   oldChild.remove();
   appendChildToParent(newChild, parentElement);
@@ -221,12 +244,12 @@ export function replaceChildInParent(
 /**
  * Adds or modifies an attribute to the given element
  *
- * @param {any} element The element to add the attribute to
+ * @param {HTMLElement} element The element to add the attribute to
  * @param {string} property The name of the attribute to add
  * @param {any} value The value to set the attribute to
  */
 export function modifyAttribute(
-  element: any,
+  element: HTMLElement,
   property: string,
   value: any
 ): void {
@@ -237,23 +260,26 @@ export function modifyAttribute(
  * Retrieves the value of the specified attribute from the given element
  *
  * @param {string} attributeName - The name of the attribute to retrieve
- * @param {any} element - The element from which to retrieve the attribute
+ * @param {HTMLElement} element - The element from which to retrieve the attribute
  *
  * @returns {string} The value of the attribute
  */
-export function getAttribute(attributeName: string, element: any): string {
+export function getAttribute(
+  attributeName: string,
+  element: HTMLElement
+): string {
   return element.getAttribute(attributeName);
 }
 
 /**
  * Removes an attribute from an element and sets a new attribute in its place.
  *
- * @param {any} element - The element from which to remove the attribute.
+ * @param {HTMLElement} element - The element from which to remove the attribute.
  * @param {string} oldAttribute - The name of the attribute to remove.
  * @param {string} newAttribute - The name of the new attribute to set.
  */
 export function replaceAttribute(
-  element: any,
+  element: HTMLElement,
   oldAttribute: string,
   newAttribute: string
 ) {
@@ -264,53 +290,53 @@ export function replaceAttribute(
 /**
  * Enables the specified element by removing the "disabled" attribute and setting the "enabled" attribute.
  *
- * @param {any} element - The element to enable.
+ * @param {HTMLElement} element - The element to enable.
  */
-export function enableElement(element: any): void {
+export function enableElement(element: HTMLElement): void {
   replaceAttribute(element, "disabled", "enabled");
 }
 
 /**
  * Disables the specified element by removing the "enabled" attribute and setting the "disabled" attribute.
  *
- * @param {any} element - The element to disable.
+ * @param {HTMLElement} element - The element to disable.
  */
-export function disableElement(element: any): void {
+export function disableElement(element: HTMLElement): void {
   replaceAttribute(element, "enabled", "disabled");
 }
 
 /**
  * Adds a class name to a given element's class list
- * @param {any} element - The element to add the class to
+ * @param {HTMLElement} element - The element to add the class to
  * @param {string} className - The class name to add
  *
  * @returns {void}
  */
-export function addClass(element: any, className: string): void {
+export function addClass(element: HTMLElement, className: string): void {
   element.classList.add(className);
 }
 
 /**
  * Removes a class name from a given element's class list
- * @param {any} element - The element to remove the class from
+ * @param {HTMLElement} element - The element to remove the class from
  * @param {string} className - The class name to remove
  *
  * @returns {void}
  */
-export function removeClass(element: any, className: string): void {
+export function removeClass(element: HTMLElement, className: string): void {
   element.classList.remove(className);
 }
 
 /**
  * Replaces an old class name with a new class name in a given element's class list
- * @param {any} element - The element to replace the class name in
+ * @param {HTMLElement} element - The element to replace the class name in
  * @param {string} oldClassName - The old class name to replace
  * @param {string} newClassName - The new class name to replace with
  *
  * @returns {void}
  */
 export function replaceClass(
-  element: any,
+  element: HTMLElement,
   oldClassName: string,
   newClassName: string
 ): void {
