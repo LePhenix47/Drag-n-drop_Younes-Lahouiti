@@ -3,10 +3,19 @@ import { log } from "./utils/functions/console.functions";
 //Web components
 import "./components/draggable-element.component";
 import {
+  addClass,
+  removeClass,
   selectByClass,
   selectQuery,
   selectQueryAll,
 } from "./utils/functions/dom.functions";
+import {
+  handleContainerDraggingElementDragOver,
+  handleDropzoneDragLeave,
+  handleDropzoneDragOver,
+  handleDropzoneDrop,
+  handleFileInputUpload,
+} from "./event-listeners.functions";
 
 log("Hello world!");
 
@@ -14,81 +23,40 @@ function addContainerEventListeners() {
   const containersArray: HTMLElement[] = selectByClass("index__container");
 
   for (const container of containersArray) {
-    container.addEventListener("dragover", handleDraggingElementDragOver);
-    container.addEventListener("touchmove", handleDraggingElementDragOver, {
-      passive: true,
-    });
+    container.addEventListener(
+      "dragover",
+      handleContainerDraggingElementDragOver
+    );
+    container.addEventListener(
+      "touchmove",
+      handleContainerDraggingElementDragOver,
+      {
+        passive: true,
+      }
+    );
   }
 }
 addContainerEventListeners();
 
-function handleDraggingElementDragOver(event: DragEvent | TouchEvent) {
-  //Prevent the default behavior of the browser to enable element dropping
-  event.preventDefault();
+function addNewCardCreatorEventListeners() {
+  const labelDropzone: HTMLLabelElement = selectQuery(
+    ".index__label--image-drop"
+  ) as HTMLLabelElement;
 
-  const container: HTMLElement = event.currentTarget as HTMLElement;
+  labelDropzone.addEventListener("dragover", handleDropzoneDragOver);
 
-  const pointerYPosition: number =
-    event.type === "dragover"
-      ? (event as DragEvent).clientY
-      : (event as TouchEvent).touches[0].clientY;
+  labelDropzone.addEventListener("dragleave", handleDropzoneDragLeave);
 
-  const draggedDraggable: HTMLElement = selectQuery(".dragging") as HTMLElement;
+  labelDropzone.addEventListener("drop", handleDropzoneDrop);
 
-  const hasNoDraggable: boolean = !draggedDraggable;
-  if (hasNoDraggable) {
-    throw new Error("No draggable was found!");
-  }
+  const fileInput: HTMLInputElement = selectQuery(
+    ".index__input",
+    labelDropzone
+  ) as HTMLInputElement;
+  fileInput.addEventListener("input", handleFileInputUpload);
 
-  //Closest element from the mouse
-  const closestElement: HTMLElement | null = getClosestElementFromPointer(
-    container,
-    pointerYPosition
-  );
-  //
-  const hasNoAfterElement: boolean = closestElement === null;
-  if (hasNoAfterElement) {
-    //We add it in last place
-    container.appendChild(draggedDraggable);
-  } else {
-    //We add it in frontof the closest element
-    container.insertBefore(draggedDraggable, closestElement);
-  }
+  const deleteButton: HTMLButtonElement = selectQuery(
+    ".index__delete-button"
+  ) as HTMLButtonElement;
 }
-
-function getClosestElementFromPointer(
-  container: HTMLElement,
-  pointerYPosition: number,
-  findVertically: boolean = true
-): HTMLElement | null {
-  const staticDraggablesArray: HTMLElement[] = selectQueryAll(
-    ".index__draggable:not(.dragging)",
-    container
-  ) as HTMLElement[];
-
-  //We initialize 2 variables to get the closest element
-  //and the the closest offset nearing the most 0
-  let closestElement: HTMLElement | null = null;
-  let closestOffset: number = Number.NEGATIVE_INFINITY;
-
-  for (const staticDraggable of staticDraggablesArray) {
-    //We get the cooridnates and dimensions of the draggable
-    const draggableRect: DOMRect = staticDraggable.getBoundingClientRect();
-    const { top, height, left, width } = draggableRect;
-
-    //We compute the offset between the draggable and the mouse position
-    const currentOffset: number = findVertically
-      ? pointerYPosition - (top + height / 2)
-      : pointerYPosition - (left + width / 2);
-
-    const isAboveAfterElement: boolean = currentOffset < 0;
-    const hasGreatestOffset: boolean = currentOffset > closestOffset;
-
-    if (isAboveAfterElement && hasGreatestOffset) {
-      closestOffset = currentOffset;
-      closestElement = staticDraggable;
-    }
-  }
-
-  return closestElement;
-}
+addNewCardCreatorEventListeners();

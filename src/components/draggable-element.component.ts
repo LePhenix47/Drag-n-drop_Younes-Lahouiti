@@ -6,7 +6,7 @@ import {
   removeClass,
   selectQuery,
 } from "../utils/functions/dom.functions";
-import { checkImageValidity } from "../utils/functions/image.functions";
+import { checkImageValidity } from "../utils/functions/file.functions";
 import {
   cssReset,
   darkThemeVariables,
