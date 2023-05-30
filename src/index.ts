@@ -10,12 +10,14 @@ import {
   selectQueryAll,
 } from "./utils/functions/dom.functions";
 import {
+  createNewDraggableElement,
   deleteImagePreview,
   handleContainerDraggingElementDragOver,
   handleDropzoneDragLeave,
   handleDropzoneDragOver,
   handleDropzoneDrop,
   handleFileInputUpload,
+  handleInputUrlToSetImage,
 } from "./event-listeners.functions";
 
 log("Hello world!");
@@ -56,10 +58,22 @@ function addNewCardCreatorEventListeners() {
   ) as HTMLInputElement;
   fileInput.addEventListener("input", handleFileInputUpload);
 
+  const urlInput: HTMLInputElement = selectQuery(
+    "input#add-image-url"
+  ) as HTMLInputElement;
+
+  urlInput.addEventListener("input", handleInputUrlToSetImage);
+
   const deleteButton: HTMLButtonElement = selectQuery(
     ".index__delete-button"
   ) as HTMLButtonElement;
 
   deleteButton.addEventListener("click", deleteImagePreview);
+
+  const formElement: HTMLFormElement = selectQuery(
+    ".index__form"
+  ) as HTMLFormElement;
+
+  formElement.addEventListener("submit", createNewDraggableElement);
 }
 addNewCardCreatorEventListeners();

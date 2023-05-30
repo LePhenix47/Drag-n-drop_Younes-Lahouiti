@@ -1,10 +1,12 @@
 import { error, log } from "./utils/functions/console.functions";
 import {
   addClass,
+  appendChildToParent,
   disableElement,
   enableElement,
   getAncestor,
   getParent,
+  modifyAttribute,
   removeClass,
   selectQuery,
   selectQueryAll,
@@ -12,6 +14,7 @@ import {
 import {
   checkFileDataValidity,
   checkFileType,
+  checkImageValidity,
 } from "./utils/functions/file.functions";
 
 /**
@@ -102,7 +105,13 @@ export function getClosestElementFromPointer(
   return closestElement;
 }
 
-export function handleDropzoneDragOver(event: DragEvent) {
+/**
+ * Handles the dragover event on the dropzone element.
+ *
+ * @param {DragEvent} event - The dragover event.
+ * @returns {void}
+ */
+export function handleDropzoneDragOver(event: DragEvent): void {
   event.preventDefault();
 
   const labelDropzone: HTMLLabelElement =
@@ -111,7 +120,13 @@ export function handleDropzoneDragOver(event: DragEvent) {
   addClass(labelDropzone, "active");
 }
 
-export function handleDropzoneDragLeave(event: DragEvent) {
+/**
+ * Handles the dragleave event on the dropzone element.
+ *
+ * @param {DragEvent} event - The dragleave event.
+ * @returns {void}
+ */
+export function handleDropzoneDragLeave(event: DragEvent): void {
   event.preventDefault();
 
   const labelDropzone: HTMLLabelElement =
@@ -120,7 +135,13 @@ export function handleDropzoneDragLeave(event: DragEvent) {
   removeClass(labelDropzone, "active");
 }
 
-export async function handleDropzoneDrop(event: DragEvent) {
+/**
+ * Handles the drop event on the dropzone element.
+ *
+ * @param {DragEvent} event - The drop event.
+ * @returns {Promise<void>}
+ */
+export async function handleDropzoneDrop(event: DragEvent): Promise<void> {
   event.preventDefault();
 
   const labelDropzone: HTMLLabelElement =
@@ -192,7 +213,13 @@ export async function handleDropzoneDrop(event: DragEvent) {
   }
 }
 
-export async function handleFileInputUpload(event: Event) {
+/**
+ * Handles the drop event on the dropzone element.
+ *
+ * @param {DragEvent} event - The drop event.
+ * @returns {void}
+ */
+export function handleFileInputUpload(event: Event): void {
   const fileInput: HTMLInputElement = event.currentTarget as HTMLInputElement;
 
   const labelDropzone: HTMLLabelElement = getParent(
@@ -265,7 +292,13 @@ export async function handleFileInputUpload(event: Event) {
   }
 }
 
-export function deleteImagePreview(event: Event) {
+/**
+ * Handles the click event on the delete button for the image preview.
+ *
+ * @param {Event} event - The click event.
+ * @returns {void}
+ */
+export function deleteImagePreview(event: Event): void {
   const deleteButton: HTMLButtonElement =
     event.currentTarget as HTMLButtonElement;
 
@@ -317,4 +350,98 @@ export function deleteImagePreview(event: Event) {
     removeClass(paragraph, "hide");
     paragraph.textContent = "Preview image here";
   }
+}
+
+/**
+ * Handles the input event on the URL input element for setting the image.
+ *
+ * @param {Event} event - The input event.
+ * @returns {Promise<void>}
+ */
+export async function handleInputUrlToSetImage(event: Event): Promise<void> {
+  const input: HTMLInputElement = event.currentTarget as HTMLInputElement;
+
+  const parentSection: HTMLElement = getAncestor(
+    input,
+    ".index__new-card--image"
+  );
+
+  const labelDropzone: HTMLLabelElement = selectQuery(
+    ".index__label--image-drop",
+    parentSection
+  ) as HTMLLabelElement;
+
+  const previewContainer: HTMLDivElement = selectQuery(
+    ".index__image-preview-container",
+    parentSection
+  ) as HTMLDivElement;
+
+  const imagePreviewParagraph: HTMLParagraphElement = selectQuery(
+    "p",
+    previewContainer
+  ) as HTMLParagraphElement;
+
+  const imagePreview: HTMLImageElement = selectQuery(
+    "img",
+    previewContainer
+  ) as HTMLImageElement;
+
+  const deleteButton: HTMLButtonElement = selectQuery(
+    "button",
+    previewContainer
+  ) as HTMLButtonElement;
+
+  try {
+    await checkImageValidity(input.value);
+
+    imagePreview.src = input.value;
+    imagePreviewParagraph.textContent = "Preview image here";
+
+    hideDropzone();
+    showImage();
+  } catch (imageError) {
+    imagePreview.src = "";
+    imagePreviewParagraph.textContent = imageError;
+  }
+
+  function hideDropzone() {
+    addClass(labelDropzone, "hide");
+
+    addClass(imagePreviewParagraph, "hide");
+  }
+
+  function showImage() {
+    removeClass(imagePreview, "hide");
+    imagePreview.src = input.value;
+    removeClass(deleteButton, "hide");
+  }
+}
+
+export function createNewDraggableElement(event: Event) {
+  event.preventDefault(); //We avoid refreshing the browser page
+
+  const firstDragAndDropContainer: HTMLElement =
+    selectQuery(".index__container");
+
+  log("Submit!");
+
+  const form: HTMLFormElement = event.currentTarget as HTMLFormElement;
+
+  const nameInput: HTMLInputElement = selectQuery(
+    ".index__input[type=text]",
+    form
+  ) as HTMLInputElement;
+
+  const imagePreview: HTMLImageElement = selectQuery(
+    ".index__image-preview",
+    form
+  ) as HTMLImageElement;
+
+  const draggableElementComponent: HTMLElement =
+    document.createElement("draggable-element");
+
+  modifyAttribute("name", nameInput.value, draggableElementComponent);
+  modifyAttribute("image-url", imagePreview.src, draggableElementComponent);
+
+  appendChildToParent(draggableElementComponent, firstDragAndDropContainer);
 }
