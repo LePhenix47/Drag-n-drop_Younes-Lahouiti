@@ -16,7 +16,7 @@
 
 ## 2. Demo
 
-You can see a live demo of the project at: [GitHub Pages](https://lephenix47.github.io/Paintbrush_Younes-Lahouiti/)
+You can see a live demo of the project at: [GitHub Pages](https://lephenix47.github.io/Drag-n-drop_Younes-Lahouiti/)
 
 ## 3. Technologies Used
 
