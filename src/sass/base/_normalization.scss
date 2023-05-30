@@ -169,6 +169,13 @@ option {
     display: none !important;
 }
 
+img,
+picture,
+svg {
+    display: block;
+
+    max-width: 100%;
+}
 
 //Reset for all the input types
 input {

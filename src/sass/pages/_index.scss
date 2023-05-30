@@ -67,6 +67,23 @@
         justify-content: space-evenly;
     }
 
+    &__image-preview-container {
+        width: 100%;
+
+        background-color: var(--bg-primary);
+
+        border: 2px dashed currentColor;
+        border-radius: 5px;
+        min-height: 250px;
+    }
+
+    &__image-preview {
+        @include fit-image;
+
+        width: 100%;
+        height: 250px;
+    }
+
     &__label {
         display: inline-flex;
         align-items: center;

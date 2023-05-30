@@ -15,7 +15,9 @@ function addContainerEventListeners() {
 
   for (const container of containersArray) {
     container.addEventListener("dragover", handleDraggingElementDragOver);
-    container.addEventListener("touchmove", handleDraggingElementDragOver);
+    container.addEventListener("touchmove", handleDraggingElementDragOver, {
+      passive: true,
+    });
   }
 }
 addContainerEventListeners();
@@ -39,7 +41,7 @@ function handleDraggingElementDragOver(event: DragEvent | TouchEvent) {
   }
 
   //Closest element from the mouse
-  const closestElement: HTMLElement | null = getClosestElementFromMouse(
+  const closestElement: HTMLElement | null = getClosestElementFromPointer(
     container,
     pointerYPosition
   );
@@ -54,7 +56,7 @@ function handleDraggingElementDragOver(event: DragEvent | TouchEvent) {
   }
 }
 
-function getClosestElementFromMouse(
+function getClosestElementFromPointer(
   container: HTMLElement,
   pointerYPosition: number,
   findVertically: boolean = true

@@ -246,7 +246,9 @@ class DraggableElement extends HTMLElement {
     iconContainer.addEventListener("pointerup", this.disableDragging);
 
     this.addEventListener("dragstart", this.addDraggingClass);
-    this.addEventListener("touchstart", this.addDraggingClass);
+    this.addEventListener("touchstart", this.addDraggingClass, {
+      passive: true,
+    });
 
     this.addEventListener("dragend", this.removeDraggingClass);
     this.addEventListener("touchend", this.removeDraggingClass);
@@ -266,7 +268,9 @@ class DraggableElement extends HTMLElement {
     iconContainer.removeEventListener("pointerup", this.disableDragging);
 
     this.addEventListener("dragstart", this.addDraggingClass);
-    this.addEventListener("touchstart", this.addDraggingClass);
+    this.addEventListener("touchstart", this.addDraggingClass, {
+      passive: true,
+    });
 
     this.addEventListener("dragend", this.removeDraggingClass);
     this.addEventListener("touchend", this.removeDraggingClass);
