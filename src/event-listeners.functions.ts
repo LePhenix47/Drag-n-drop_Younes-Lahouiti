@@ -1,7 +1,10 @@
 import { error, log } from "./utils/functions/console.functions";
 import {
   addClass,
+  disableElement,
+  enableElement,
   getAncestor,
+  getParent,
   removeClass,
   selectQuery,
   selectQueryAll,
@@ -162,25 +165,156 @@ export async function handleDropzoneDrop(event: DragEvent) {
     return;
   }
 
-  addClass(labelDropzone, "hide");
+  hideDropzone();
+  showImage();
+  disableUrlForImage();
 
-  addClass(imagePreviewParagraph, "hide");
+  function disableUrlForImage() {
+    const urlInput: HTMLInputElement = selectQuery(
+      "input#add-image-url",
+      parentSection
+    ) as HTMLInputElement;
+    disableElement(urlInput);
+  }
 
-  removeClass(imagePreview, "hide");
+  function hideDropzone() {
+    addClass(labelDropzone, "hide");
 
-  removeClass(deleteButton, "hide");
+    addClass(imagePreviewParagraph, "hide");
+  }
 
-  imagePreview.src = URL.createObjectURL(file);
+  function showImage() {
+    removeClass(imagePreview, "hide");
+
+    removeClass(deleteButton, "hide");
+
+    imagePreview.src = URL.createObjectURL(file);
+  }
 }
 
 export async function handleFileInputUpload(event: Event) {
   const fileInput: HTMLInputElement = event.currentTarget as HTMLInputElement;
 
-  let file: File = fileInput.files[0];
-  log("upload", file, URL.createObjectURL(file));
+  const labelDropzone: HTMLLabelElement = getParent(
+    fileInput
+  ) as HTMLLabelElement;
 
-  try {
-  } catch (dataUploadError) {
-    error(dataUploadError);
+  const parentSection: HTMLElement = getAncestor(
+    fileInput,
+    ".index__new-card.index__new-card--image"
+  );
+
+  const imagePreviewContainer: HTMLDivElement = selectQuery(
+    ".index__image-preview-container",
+    parentSection
+  ) as HTMLDivElement;
+
+  const imagePreviewParagraph: HTMLParagraphElement = selectQuery(
+    "p",
+    imagePreviewContainer
+  ) as HTMLParagraphElement;
+
+  const imagePreview: HTMLImageElement = selectQuery(
+    "img",
+    imagePreviewContainer
+  ) as HTMLImageElement;
+
+  const deleteButton: HTMLButtonElement = selectQuery(
+    "button",
+    imagePreviewContainer
+  ) as HTMLButtonElement;
+
+  removeClass(labelDropzone, "active");
+
+  let file: File = fileInput.files[0];
+
+  const { isValid, message } = checkFileDataValidity(file, "image");
+
+  imagePreviewParagraph.textContent = message;
+
+  const isNotValid: boolean = !isValid;
+  if (isNotValid) {
+    error("File is invalid!");
+    return;
+  }
+
+  hideDropzone();
+  showImage();
+  disableUrlForImage();
+
+  function disableUrlForImage() {
+    const urlInput: HTMLInputElement = selectQuery(
+      "input#add-image-url",
+      parentSection
+    ) as HTMLInputElement;
+    disableElement(urlInput);
+  }
+
+  function hideDropzone() {
+    addClass(labelDropzone, "hide");
+
+    addClass(imagePreviewParagraph, "hide");
+  }
+
+  function showImage() {
+    removeClass(imagePreview, "hide");
+
+    removeClass(deleteButton, "hide");
+
+    imagePreview.src = URL.createObjectURL(file);
+  }
+}
+
+export function deleteImagePreview(event: Event) {
+  const deleteButton: HTMLButtonElement =
+    event.currentTarget as HTMLButtonElement;
+
+  const sectionContainer: HTMLElement = getAncestor(
+    deleteButton,
+    ".index__new-card--image"
+  );
+
+  const labelDropzone: HTMLLabelElement = selectQuery(
+    ".index__label--image-drop",
+    sectionContainer
+  ) as HTMLLabelElement;
+
+  resetPreview();
+  showDropzone();
+  enableUrlInput();
+
+  addClass(deleteButton, "hide");
+
+  function enableUrlInput() {
+    const urlInput: HTMLInputElement = selectQuery(
+      "input#add-image-url",
+      sectionContainer
+    ) as HTMLInputElement;
+    enableElement(urlInput);
+  }
+
+  function showDropzone() {
+    removeClass(labelDropzone, "hide");
+  }
+
+  function resetPreview() {
+    const previewContainer: HTMLElement = getParent(deleteButton);
+
+    const imagePreview: HTMLImageElement = selectQuery(
+      "img",
+      previewContainer
+    ) as HTMLImageElement;
+
+    const paragraph: HTMLParagraphElement = selectQuery(
+      "p",
+      previewContainer
+    ) as HTMLParagraphElement;
+
+    imagePreview.src = "";
+
+    addClass(imagePreview, "hide");
+
+    removeClass(paragraph, "hide");
+    paragraph.textContent = "Preview image here";
   }
 }

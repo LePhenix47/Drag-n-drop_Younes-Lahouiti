@@ -10,6 +10,7 @@ import {
   selectQueryAll,
 } from "./utils/functions/dom.functions";
 import {
+  deleteImagePreview,
   handleContainerDraggingElementDragOver,
   handleDropzoneDragLeave,
   handleDropzoneDragOver,
@@ -58,5 +59,7 @@ function addNewCardCreatorEventListeners() {
   const deleteButton: HTMLButtonElement = selectQuery(
     ".index__delete-button"
   ) as HTMLButtonElement;
+
+  deleteButton.addEventListener("click", deleteImagePreview);
 }
 addNewCardCreatorEventListeners();

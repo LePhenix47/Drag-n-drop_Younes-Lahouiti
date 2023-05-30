@@ -162,6 +162,11 @@
         &--upload-type {
             width: fit-content;
         }
+
+
+        &:disabled {
+            background-color: var(--disabled-button-bg);
+        }
     }
 
     &__button {
