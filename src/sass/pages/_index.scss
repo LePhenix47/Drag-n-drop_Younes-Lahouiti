@@ -16,6 +16,32 @@
     flex-direction: column;
     gap: 50px;
 
+    &__expand {
+
+        &:has(input#expand-checkbox:checked)+.index__new-cards {
+            grid-template-rows: 1fr;
+        }
+
+        &:has(input#expand-checkbox:checked) svg {
+            rotate: 180deg;
+        }
+    }
+
+
+    &__new-cards {
+        //Trick to animate a height to auto
+        display: grid;
+
+
+        grid-template-rows: 0fr;
+
+        transition: grid-template-rows 0.5s ease-out;
+    }
+
+    &__new-cards-wrapper {
+        overflow: hidden;
+    }
+
     &__form {
         background-color: var(--semi-transparent-bg);
 
@@ -120,6 +146,18 @@
         gap: 10px;
 
         width: 100%;
+
+        &--expand {
+            background-color: var(--semi-transparent-bg);
+
+            border-radius: 10px;
+
+            padding: 10px;
+
+            &>svg {
+                transition: rotate 350ms ease-out;
+            }
+        }
 
         &--upload-type {
             @include center-flex(10px);
