@@ -83,11 +83,6 @@ const draggableTemplateCssStyle: string = /* css */ `
   text-overflow: ellipsis;
 }
 
-@media(prefers-color-scheme:dark){
-  .draggable-element__image{
-    filter: invert(100%) hue-rotate(180deg);
-  }
-}
 `;
 const draggableTemplateHtmlContent: string = /*html */ `
   <div class="draggable-element">
@@ -102,6 +97,9 @@ const draggableTemplateHtmlContent: string = /*html */ `
       <div class="draggable-element__text-image-container">
           <img class="draggable-element__image" src=""  alt=""/>
           <p class="draggable-element__paragraph">Name 1234</p>
+      </div>
+      <div class="draggable-element__button-container">
+        <button type="button" class="draggable-element__button"></button>
       </div>
   </div>
 `;

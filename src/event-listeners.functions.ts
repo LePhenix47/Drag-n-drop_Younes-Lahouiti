@@ -440,6 +440,8 @@ export function createNewDraggableElement(event: Event) {
   const draggableElementComponent: HTMLElement =
     document.createElement("draggable-element");
 
+  addClass(draggableElementComponent, "index__draggable");
+  modifyAttribute("draggable", false, draggableElementComponent);
   modifyAttribute("name", nameInput.value, draggableElementComponent);
   modifyAttribute("image-url", imagePreview.src, draggableElementComponent);
 
