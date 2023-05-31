@@ -274,7 +274,13 @@ class DraggableElement extends HTMLElement {
     removeClass(this, "dragging");
   }
 
-  private deleteWebComponent(event: Event) {
+  /**
+   * Removes the `<draggable-element>` web component from the DOM.
+   * @param {Event} event - Event on the button click.
+   * @returns {void}
+   * @private
+   */
+  private deleteWebComponent(event: Event): void {
     this.remove();
   }
 
@@ -333,8 +339,6 @@ class DraggableElement extends HTMLElement {
       this.shadowRoot
     ) as HTMLButtonElement;
     deleteButton.removeEventListener("click", this.deleteWebComponent);
-
-    log(`Removed or moved to another container ${this.name}'s card`);
   }
 
   /**
