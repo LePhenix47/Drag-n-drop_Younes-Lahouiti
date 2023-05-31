@@ -341,6 +341,10 @@ export const lightThemeVariables: string = /* css */ `
 
     --selection-bg-color: hwb(240 0% 0%);
     --selection-color: white;
+
+    
+    --delete-button-bg: #ffdddd;
+    --delete-button-color: #ff441b;
 }
 
 ::backdrop {
@@ -378,6 +382,9 @@ export const darkThemeVariables: string = /* css */ `
 
         --selection-bg-color: orange;
         --selection-color: black;
+
+        --delete-button-bg: #290000;
+        --delete-button-color: #eb3941;
     }
 
 

@@ -20,19 +20,25 @@ const draggableTemplateElement: HTMLTemplateElement =
 const draggableTemplateCssStyle: string = /* css */ `
 
 .draggable-element {
-    align-items: center;
-    background-color: var(--bg-primary);
-    border-radius: calc(var(--container-border-radius) - var(--padding-container));
-    display: flex;
-    height: 50px;
-    justify-content: space-between;
-    overflow: hidden;
-    width: 100%;
-    padding: 5px;
+  background-color: var(--bg-primary);
+  border-radius: calc(var(--container-border-radius) - var(--padding-container));
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  overflow: hidden;
+  height: 50px;
+  width: 100%;
+ /* padding: 5px;*/
+
+  position: relative;
 }
 
 .draggable-element.dragging{
   filter: invert(100%) hue-rotate(180deg);
+}
+
+.draggable-element.dragging img{
+   filter: invert(0%) hue-rotate(0deg);
 }
 
 .draggable-element__image {
@@ -47,7 +53,7 @@ const draggableTemplateCssStyle: string = /* css */ `
 
 .draggable-element__icon-container {
   background-color: var(--bg-primary);
-  border-radius: 8px;
+  border-radius: 8px 0 0 8px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -83,6 +89,39 @@ const draggableTemplateCssStyle: string = /* css */ `
   text-overflow: ellipsis;
 }
 
+.draggable-element__button-container{
+  height: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.draggable-element__button{
+  position: absolute;
+  right: 0;
+
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  aspect-ratio: 1/1;
+  height: 100%;
+
+  width: 0;
+
+  transform-origin: right;
+
+  transition: 
+    width 350ms ease-out,  
+    background-color 350ms ease-out
+  ;
+}
+
+.draggable-element:hover .draggable-element__button{
+  width: 15%;
+  background-color: var(--delete-button-bg);
+}
 `;
 const draggableTemplateHtmlContent: string = /*html */ `
   <div class="draggable-element">
@@ -99,10 +138,10 @@ const draggableTemplateHtmlContent: string = /*html */ `
           <p class="draggable-element__paragraph">Name 1234</p>
       </div>
       <div class="draggable-element__button-container">
-        <button type="button" class="draggable-element__button">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
-            <path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"/></svg>
-      </button>
+          <button type="button" class="draggable-element__button">
+            <svg class="no-pointer-events" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" height="20" width="20" fill="var(--delete-button-color)">
+              <path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"/></svg>
+          </button>
       </div>
   </div>
 `;
@@ -150,6 +189,8 @@ class DraggableElement extends HTMLElement {
 
     this.addDraggingClass = this.addDraggingClass.bind(this);
     this.removeDraggingClass = this.removeDraggingClass.bind(this);
+
+    this.deleteWebComponent = this.deleteWebComponent.bind(this);
   }
 
   /**
@@ -233,6 +274,10 @@ class DraggableElement extends HTMLElement {
     removeClass(this, "dragging");
   }
 
+  private deleteWebComponent(event: Event) {
+    this.remove();
+  }
+
   /**
    * Called when the element is connected to the DOM.
    * @returns {void}
@@ -253,6 +298,13 @@ class DraggableElement extends HTMLElement {
 
     this.addEventListener("dragend", this.removeDraggingClass);
     this.addEventListener("touchend", this.removeDraggingClass);
+
+    const deleteButton: HTMLButtonElement = selectQuery(
+      ".draggable-element__button",
+      this.shadowRoot
+    ) as HTMLButtonElement;
+
+    deleteButton.addEventListener("click", this.deleteWebComponent);
   }
 
   /**
@@ -275,6 +327,14 @@ class DraggableElement extends HTMLElement {
 
     this.addEventListener("dragend", this.removeDraggingClass);
     this.addEventListener("touchend", this.removeDraggingClass);
+
+    const deleteButton: HTMLButtonElement = selectQuery(
+      ".draggable-element__button",
+      this.shadowRoot
+    ) as HTMLButtonElement;
+    deleteButton.removeEventListener("click", this.deleteWebComponent);
+
+    log(`Removed or moved to another container ${this.name}'s card`);
   }
 
   /**
@@ -318,7 +378,7 @@ class DraggableElement extends HTMLElement {
           //
           log("%cSuccess!", "background:green; padding: 5px; font-size: 20px");
         } catch (imageUrlError) {
-          error(imageUrlError);
+          warn(imageUrlError);
           image.src = "./public/jpg/random-photo.jpg";
         }
 
